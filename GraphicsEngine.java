@@ -4,14 +4,14 @@ import java.util.List;
 import java.awt.*;
 import javax.swing.*;
 
-public class lab4 extends JPanel {
+public class GraphicsEngine extends JPanel {
   
   public static String show = "show";
   public static String polygon = "polygon";
   public static String exit = "exit"; 
-  public static String translate = "T";
-  public static String rotate = "R";
-  public static String scale = "S";
+  public static String translate = "t";
+  public static String rotate = "r";
+  public static String scale = "s";
   public static int length = 0;
   public static Object[] numbersArray;
   public static Object[] translateArray;
@@ -54,9 +54,12 @@ public class lab4 extends JPanel {
         }
         JFrame frame = new JFrame();
         frame.setTitle("Polygon");
-        frame.setSize(350, 250);
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        int xSize = ((int) tk.getScreenSize().getWidth());
+        int ySize = ((int) tk.getScreenSize().getHeight());
+        frame.setSize(xSize,ySize);
         Container contentPane = frame.getContentPane();
-        contentPane.add(new lab4());
+        contentPane.add(new GraphicsEngine());
         frame.setVisible(true);
         System.out.println(); 
       }
@@ -64,10 +67,8 @@ public class lab4 extends JPanel {
        str = str.replaceAll("[^0-9]+", " "); 
        translateArray = Arrays.asList(str.trim().split(" ")).toArray();
        for (int i = 0; i < numbersArray.length; i+=2) {
-         Object x = (Object) ((int)Double.parseDouble(numbersArray[i].toString()) + Integer.parseInt(translateArray[0].toString()));
-         Object y = (Object) ((int)Double.parseDouble(numbersArray[(i+1)].toString()) + Integer.parseInt(translateArray[1].toString()));
-         numbersArray[i] = (Object) x;
-         numbersArray[(i+1)] = (Object) y;
+         numbersArray[i] = (Object) ((int)Double.parseDouble(numbersArray[i].toString()) + Integer.parseInt(translateArray[0].toString()));
+         numbersArray[(i+1)] = (Object) ((int)Double.parseDouble(numbersArray[(i+1)].toString()) + Integer.parseInt(translateArray[1].toString()));
        } 
       }
       if (str.toLowerCase().indexOf(rotate.toLowerCase()) != -1) { //if input string contains "r"
@@ -76,12 +77,11 @@ public class lab4 extends JPanel {
        for (int i = 0; i < numbersArray.length; i+=2) {
          double c_x = Double.parseDouble(numbersArray[i].toString());
          double c_y = Double.parseDouble(numbersArray[(i+1)].toString());
-         centroid_x += (int) c_x;
-         centroid_y += (int) c_y;
+         centroid_x += (int) Double.parseDouble(numbersArray[i].toString());
+         centroid_y += (int) Double.parseDouble(numbersArray[(i+1)].toString());
        } 
        centroid_x = centroid_x/(numbersArray.length/2);
        centroid_y = centroid_y/(numbersArray.length/2);
-       System.out.println(rotateArray[0]);
        for (int i = 0; i < numbersArray.length; i+=2) {
          Object a = (Object) (Math.cos(Math.toRadians(Integer.parseInt(rotateArray[0].toString()))) 
                            * ((int)Double.parseDouble(numbersArray[i].toString()) - centroid_x)
@@ -100,10 +100,8 @@ public class lab4 extends JPanel {
         System.out.println(str);
         scaleArray = Arrays.asList(str.trim().split(" ")).toArray();
         for (int i = 0; i < numbersArray.length; i+=2) {
-          double c_x = Double.parseDouble(numbersArray[i].toString());
-          double c_y = Double.parseDouble(numbersArray[(i+1)].toString());
-          centroid_x += (int) c_x;
-          centroid_y += (int) c_y;
+          centroid_x += (int) Double.parseDouble(numbersArray[i].toString());
+          centroid_y += (int) Double.parseDouble(numbersArray[(i+1)].toString());
         }
         centroid_x = centroid_x/(numbersArray.length/2);
         centroid_y = centroid_y/(numbersArray.length/2);
@@ -126,9 +124,8 @@ public class lab4 extends JPanel {
     super.paintComponent(g);
     Polygon p = new Polygon();
     for (int i = 0; i < numbersArray.length; i+=2) {
-      double x_i = Double.parseDouble( numbersArray[i].toString() );
-      double y_i = Double.parseDouble( numbersArray[i+1].toString() );
-      p.addPoint( (int) x_i, (int) y_i );
+      p.addPoint((int) Double.parseDouble( numbersArray[i].toString() ), 
+                 (int) Double.parseDouble( numbersArray[i+1].toString()) );
     }
     g.drawPolygon(p);
  }   
