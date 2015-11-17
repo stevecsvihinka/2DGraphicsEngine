@@ -1,22 +1,22 @@
 import java.util.Scanner;
 import java.util.Arrays;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 import java.util.List;
+import java.awt.*;
+import javax.swing.*;
 
 public class lab4 extends JPanel {
   
   public static String show = "show";
   public static String polygon = "polygon";
   public static String exit = "exit"; 
-  public static String translate = "t";
-  public static String rotate = "r";
-  public static String scale = "s";
+  public static String translate = "T";
+  public static String rotate = "R";
+  public static String scale = "S";
   public static int length = 0;
   public static Object[] numbersArray;
   public static Object[] translateArray;
   public static Object[] rotateArray;
+  public static Object[] scaleArray;
   
   public static void main (String[] args) {
     
@@ -44,7 +44,7 @@ public class lab4 extends JPanel {
             str = str.replaceAll("[^0-9]+", " ");
             list = Arrays.asList(str.trim().split(" "));
             numbersArray = list.toArray(new Object[list.size()]);
-          }
+           }
         System.out.println("OK"); 
         }  
       }
@@ -60,17 +60,17 @@ public class lab4 extends JPanel {
         frame.setVisible(true);
         System.out.println(); 
       }
-      if (str.toLowerCase().indexOf(translate.toLowerCase()) != -1) {
+      if (str.toLowerCase().indexOf(translate.toLowerCase()) != -1) { //if input string contains "t"
        str = str.replaceAll("[^0-9]+", " "); 
        translateArray = Arrays.asList(str.trim().split(" ")).toArray();
        for (int i = 0; i < numbersArray.length; i+=2) {
-         Object x = (Object) (Integer.parseInt(numbersArray[i].toString()) + Integer.parseInt(translateArray[0].toString()));
-         Object y = (Object) (Integer.parseInt(numbersArray[(i+1)].toString()) + Integer.parseInt(translateArray[1].toString()));
+         Object x = (Object) ((int)Double.parseDouble(numbersArray[i].toString()) + Integer.parseInt(translateArray[0].toString()));
+         Object y = (Object) ((int)Double.parseDouble(numbersArray[(i+1)].toString()) + Integer.parseInt(translateArray[1].toString()));
          numbersArray[i] = (Object) x;
          numbersArray[(i+1)] = (Object) y;
        } 
       }
-      if (str.toLowerCase().indexOf(rotate.toLowerCase()) != -1) {
+      if (str.toLowerCase().indexOf(rotate.toLowerCase()) != -1) { //if input string contains "r"
        str = str.replaceAll("[^0-9]+", " "); 
        rotateArray = Arrays.asList(str.trim().split(" ")).toArray();
        for (int i = 0; i < numbersArray.length; i+=2) {
@@ -79,11 +79,8 @@ public class lab4 extends JPanel {
          centroid_x += (int) c_x;
          centroid_y += (int) c_y;
        } 
-       System.out.println("x: " + centroid_x + " y: " + centroid_y + " na/2: " + (numbersArray.length/2));
        centroid_x = centroid_x/(numbersArray.length/2);
        centroid_y = centroid_y/(numbersArray.length/2);
-       System.out.println(centroid_x);
-       System.out.println(centroid_y);
        System.out.println(rotateArray[0]);
        for (int i = 0; i < numbersArray.length; i+=2) {
          Object a = (Object) (Math.cos(Math.toRadians(Integer.parseInt(rotateArray[0].toString()))) 
@@ -97,6 +94,29 @@ public class lab4 extends JPanel {
          numbersArray[i] =  (Object) a;
          numbersArray[(i+1)] = (Object) b; 
        }
+      }
+      if (str.toLowerCase().indexOf(scale.toLowerCase()) != -1 && str.toLowerCase().indexOf(show.toLowerCase()) == -1) { //if input string contains "s"
+        str = str.replaceAll("[^0-9]+", " "); 
+        System.out.println(str);
+        scaleArray = Arrays.asList(str.trim().split(" ")).toArray();
+        for (int i = 0; i < numbersArray.length; i+=2) {
+          double c_x = Double.parseDouble(numbersArray[i].toString());
+          double c_y = Double.parseDouble(numbersArray[(i+1)].toString());
+          centroid_x += (int) c_x;
+          centroid_y += (int) c_y;
+        }
+        centroid_x = centroid_x/(numbersArray.length/2);
+        centroid_y = centroid_y/(numbersArray.length/2);
+        for (int i = 0; i < numbersArray.length; i+=2) {
+          numbersArray[i] = (Object) (int) (Double.parseDouble(numbersArray[i].toString()) - centroid_x);
+          numbersArray[(i+1)] = (Object) (int) (Double.parseDouble(numbersArray[i+1].toString()) - centroid_y);
+          numbersArray[i] = (Object) (int) (Double.parseDouble(numbersArray[i].toString()) 
+                                             * Double.parseDouble(scaleArray[0].toString()));
+          numbersArray[(i+1)] = (Object) (int) (Double.parseDouble(numbersArray[i+1].toString()) 
+                                                * Double.parseDouble(scaleArray[1].toString()));
+          numbersArray[i] = (Object) (int) (Double.parseDouble(numbersArray[i].toString()) + centroid_x);
+          numbersArray[(i+1)] = (Object) (int) (Double.parseDouble(numbersArray[i+1].toString()) + centroid_y);
+        }
       }
       str = scanner.nextLine();  
     }
