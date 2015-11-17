@@ -118,6 +118,9 @@ public class GraphicsEngine extends JPanel {
       }
       str = scanner.nextLine();  
     }
+    if (str.toLowerCase().indexOf(exit.toLowerCase()) == -1) {
+      System.exit(0);
+    }
   }
   
   public void paintComponent(Graphics g) {
