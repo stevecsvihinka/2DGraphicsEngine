@@ -74,8 +74,10 @@ public class lab4 extends JPanel {
        str = str.replaceAll("[^0-9]+", " "); 
        rotateArray = Arrays.asList(str.trim().split(" ")).toArray();
        for (int i = 0; i < numbersArray.length; i+=2) {
-         centroid_x += Integer.parseInt(numbersArray[i].toString());
-         centroid_y += Integer.parseInt(numbersArray[(i+1)].toString());
+         double c_x = Double.parseDouble(numbersArray[i].toString());
+         double c_y = Double.parseDouble(numbersArray[(i+1)].toString());
+         centroid_x += (int) c_x;
+         centroid_y += (int) c_y;
        } 
        System.out.println("x: " + centroid_x + " y: " + centroid_y + " na/2: " + (numbersArray.length/2));
        centroid_x = centroid_x/(numbersArray.length/2);
@@ -85,13 +87,13 @@ public class lab4 extends JPanel {
        System.out.println(rotateArray[0]);
        for (int i = 0; i < numbersArray.length; i+=2) {
          Object a = (Object) (Math.cos(Math.toRadians(Integer.parseInt(rotateArray[0].toString()))) 
-                           * (Integer.parseInt(numbersArray[i].toString()) - centroid_x)
-                           - Math.sin(Math.toRadians(Integer.parseInt(rotateArray[0].toString()))) 
-                           * (Integer.parseInt(numbersArray[i+1].toString()) - centroid_y) + centroid_x);
-         Object b = (Object) (Math.sin(Math.toRadians(Integer.parseInt(rotateArray[0].toString()))) 
-                             * (Integer.parseInt(numbersArray[i].toString()) - centroid_x)
-                             + Math.cos(Math.toRadians(Integer.parseInt(rotateArray[0].toString()))) 
-                             * (Integer.parseInt(numbersArray[i+1].toString()) - centroid_y) + centroid_y);
+                           * ((int)Double.parseDouble(numbersArray[i].toString()) - centroid_x)
+                           - Math.sin(Math.toRadians((int)Double.parseDouble(rotateArray[0].toString()))) 
+                           * ((int)Double.parseDouble(numbersArray[i+1].toString()) - centroid_y) + centroid_x);
+         Object b = (Object) (Math.sin(Math.toRadians((int)Double.parseDouble(rotateArray[0].toString()))) 
+                             * ((int)Double.parseDouble(numbersArray[i].toString()) - centroid_x)
+                             + Math.cos(Math.toRadians((int)Double.parseDouble(rotateArray[0].toString()))) 
+                             * ((int)Double.parseDouble(numbersArray[i+1].toString()) - centroid_y) + centroid_y);
          numbersArray[i] =  (Object) a;
          numbersArray[(i+1)] = (Object) b; 
        }
